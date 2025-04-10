@@ -6,4 +6,8 @@ engine = create_engine("postgresql+psycopg2://postgres:admin@localhost:5433/fast
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 
+
+Base.metadata.drop_all(engine)
+Base.metadata.create_all(engine)
+
 # postgresql+psycopg2://postgres:admin@localhost:5433/fast_api
