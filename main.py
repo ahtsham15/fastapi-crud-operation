@@ -7,15 +7,6 @@ app = FastAPI()
 
 db = SessionLocal()
 
-# class UserSchema(BaseModel):
-#     id: int
-#     email: str
-#     firstName: str
-#     lastName: str
-#     isMale: bool
-
-#     class Config:
-#         orm_mode = True
 
 class UserCreate(BaseModel):
     email: str
@@ -24,7 +15,7 @@ class UserCreate(BaseModel):
     isMale: bool
 
 class UserSchema(UserCreate):
-    id: int  # Include the auto-generated ID for responses
+    id: int 
 
     class Config:
         orm_mode = True
@@ -37,17 +28,17 @@ def getAllUser():
 
 
 @app.post('/addnewuser', response_model=UserSchema, status_code=status.HTTP_201_CREATED)
-def addNewUser(user: UserCreate):  # ✅ Use UserCreate (no 'id' required)
+def addNewUser(user: UserCreate):  
     try:
         newUser = UserModel(
-            email=user.email,        # 🚫 Omit 'id' here
+            email=user.email,        
             firstName=user.firstName,
             lastName=user.lastName,
             isMale=user.isMale
         )
         db.add(newUser)
         db.commit()
-        db.refresh(newUser)  # Get the auto-generated ID from the database
+        db.refresh(newUser) 
         return newUser
     except Exception as e:
         db.rollback()
